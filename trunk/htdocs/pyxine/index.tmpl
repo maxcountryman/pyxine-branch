@@ -1,38 +1,48 @@
 <hr class="hide" />
 <?php
 
-$INDEX = array('Pages' =>
-	       array("Home" => "http://pyxine.sourceforge.net/"),
-
-	       'Links' =>
-	       array("SF Project Info" =>
-		     "http://sourceforge.net/projects/pyxine",
-			
-		     "Downloads" =>
-		     "http://sourceforge.net/project/showfiles.php?group_id=73236",
-				
-		     "CVS Repo" =>
-		     "http://sourceforge.net/cvs/?group_id=73236",
-
-		     "Freshmeat listing" =>
-		     "http://freshmeat.net/projects/pyxine",
-                     )
-	       );
-
-$first = true;
-
-foreach ($INDEX as $head => $list) {
-    if (!$first) {
-        ?><span class="hide">&nbsp;</span><?php
-    }
-    $first = false;				 
-    ?><strong class="h2"><?=$head?><span class="hide">:</span></strong>
-    <?php
-    foreach ($list as $text => $url) {
-        $class = ($text == $SELECTED) ? 'selected' : 'menu';
-        ?><a href="<?=$url?>" class="<?=$class?>"><?=$text?></a>
-        <?php
-    }
+function index_head($head) {
+  static $first = true;
+  if (!$first) {
+    ?><span class="hide">&nbsp;</span><?php
+  }
+  $first = false;
+  ?><strong class="h2"><?=htmlspecialchars($head)?><span class="hide">:</span></strong>
+  <?php
 }
+
+function index_entry($text, $url, $title=false) {
+  ?><a href="<?=htmlspecialchars($url)?>"<?php
+  if ($text == $GLOBAL['SELECTED']) {
+    ?> id="selected"<?php
+  }
+  if (!$title)
+    $title = $text;
+  ?> title="<?=htmlspecialchars($title)?>"><?=htmlspecialchars($text)?></a>
+  <?php
+}
+
+index_head('Pages');
+index_entry('Home',
+	    "http://pyxine.sourceforge.net/",
+	    "The Pyxine Home Page");
+
+index_head('SourceForge');
+index_entry("Project Info",
+	    "http://sourceforge.net/projects/pyxine",
+	    "SourceForge project info for Pyxine");
+index_entry("Downloads",
+	    "http://sourceforge.net/project/showfiles.php?group_id=73236");
+index_entry("CVS",
+	    "http://sourceforge.net/cvs/?group_id=73236",
+	    "CVS Repository");
+
+index_head('Links');
+index_entry("xine",
+	    "http://xinehq.de",
+	    "The xine home page");
+index_entry("freshmeat",
+	    "http://freshmeat.net/projects/pyxine",
+	    "The freshmeat listing for Pyxine");
 ?>
 <hr class="hide" />
