@@ -38,12 +38,20 @@ USAGE
         >>> import pyxine
         >>> xine = pyxine.Xine()
         >>> stream = xine.stream_new()
-        >>> stream.play("music.mp3")
+        >>> stream.open("music.mp3")
+        >>> stream.play()
 
     To play a movie, it will probably take a little more work in order to
-    properly initialize the video output driver.
+    properly initialize the video output driver.  For now, have a look at
+    ``tkplayer.py`` and ``player.py`` in the ``examples`` subdirectory.
+    
+    E.g., if you have the Tkinter package installed::
 
-        FIXME
+        # python tkplayer.py some_movie.avi
+
+    might actually play a movie for you.  (Hit 'p' to start playback.)
+
+    FIXME
 
 ROADMAP
     

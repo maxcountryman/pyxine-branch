@@ -1,5 +1,8 @@
 2003-02-12  Geoffrey T. Dairiki  <dairiki@dairiki.org>
 
+	* README: Instructions for playing an audio file were wrong.
+	Added some notes about the example players.
+
 	* pxlib/Geometry.cc (to_string): Add namespace to
 	std::ostringstream
 
