@@ -1,8 +1,12 @@
 body {
   color: black;
   background: #cdf;
-  margin: 1ex 0.5em;
+  margin: 1ex 1em;
   font-family: arial, helvetica, sans-serif;
+}
+h1 {
+  color: #821;
+  background: #cdf;
 }
 a {
   font-weight: bold;
@@ -17,33 +21,46 @@ a {
   position: absolute;
   top: 0;
   left: 0;
-  width: 7.5em;
+  width: 8em;
   height: 100%;
-  padding: 0 0.5em;
-}
-#index h2 {
-  font-size: medium;
-  font-weight: bold;
   margin: 0;
   padding: 0;
 }
+#index strong.h2 {
+  color: #821;
+  background: #cdf;
+  display: block;
+  font-size: medium;
+  font-weight: bold;
+  margin: 0.25ex 0;
+  padding: 0;
+}
+#index .hide {
+  display: block;
+  visibility: hidden;
+  height: 0;
+  margin: 0;
+}
 #index a {
   display: block;
-  width: 100%;
+  width: 7.75em;
   text-align: left;
   font-weight: normal;
   margin: 0.25ex 0;
-  padding-left: 0.25em;
+  padding: 0 0 0 0.25em;
 }
-
+#index a#selected {
+  color: #5d3376;
+  background: #fff;
+}	
 #main {
   padding: 0.5ex 0.5em 0.5ex 2.25em;
-  margin-left: 8.5em;
+  margin-left: 8em;
   color: black;
   background: white; 
 }
 #main h2 {
-  color: black;
+  color: #821;
   background: #def;
   margin-left: -1em;
   margin-right: 0;

@@ -1,1 +1,4 @@
-DirectoryIndex pyxine.html
+
+DirectoryIndex index.html
+
+AddType application/x-httpd-php .html
