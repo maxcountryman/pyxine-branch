@@ -27,7 +27,8 @@ SUBDIRS	  = pxlib pyxine test examples
 GEN_FILES = setup.py MANIFEST
 
 DIST_FILES= $(GEN_FILES)
-DIST_FILES+= Makefile common.mak LICENSE README TODO HINTS
+DIST_FILES+= Makefile common.mak
+DIST_FILES+= LICENSE README TODO HINTS ChangeLog
 DIST_FILES+= setup.py.in setup.cfg get-python-defs
 
 CLEAN_FILES = python-defs.mak
@@ -48,7 +49,7 @@ install	build sdist bdist bdist_rpm : setup.py
 
 sdist bdist bdist_rpm : distfiles
 
-MANIFEST: $(addsuffix /Makefile, $(SUBDIRS))
+MANIFEST: Makefile $(addsuffix /Makefile, $(SUBDIRS))
 	@echo "Generating MANIFEST"
 	@$(MAKE) _subdir="" _buildmanifest 3>$@
 
