@@ -12,6 +12,9 @@ a {
   font-weight: bold;
   text-decoration: none;
 }
+.hide {
+  display: none;
+}
 
 #body {
   position: relative;
@@ -35,12 +38,6 @@ a {
   margin: 0.25ex 0;
   padding: 0;
 }
-#index .hide {
-  display: block;
-  visibility: hidden;
-  height: 0;
-  margin: 0;
-}
 #index a {
   display: block;
   width: 7.75em;
@@ -49,7 +46,7 @@ a {
   margin: 0.25ex 0;
   padding: 0 0 0 0.25em;
 }
-#index a#selected {
+#index a.selected {
   color: #5d3376;
   background: #fff;
 }	

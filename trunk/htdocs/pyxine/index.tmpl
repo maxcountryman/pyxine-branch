@@ -1,3 +1,4 @@
+<hr class="hide" />
 <?php
 
 $INDEX = array('Pages' =>
@@ -17,20 +18,17 @@ $INDEX = array('Pages' =>
 $first = true;
 
 foreach ($INDEX as $head => $list) {
-    if ($first) {
-?>
-        <span class="hide">&nbsp;</span>
-<?php
-        $first = false;				 
+    if (!$first) {
+        ?><span class="hide">&nbsp;</span><?php
     }
-?>  
-    <strong class="h2"><?=$head?><span class="hide">:</span></strong>
-<?php
+    $first = false;				 
+    ?><strong class="h2"><?=$head?><span class="hide">:</span></strong>
+    <?php
     foreach ($list as $text => $url) {
         $class = ($text == $SELECTED) ? 'selected' : 'menu';
-?>
-        <a href="<?=$url?>" class="<?=$class?>"><?=$text?></a>
-<?php
+        ?><a href="<?=$url?>" class="<?=$class?>"><?=$text?></a>
+        <?php
     }
 }
 ?>
+<hr class="hide" />
