@@ -23,7 +23,7 @@ TOP	  = .
 # FIXME
 PYXINE_VERSION = 0.1alpha2
 
-SUBDIRS	  = pxlib pyxine test examples
+SUBDIRS	  = pxlib pyxine test examples doc
 GEN_FILES = setup.py MANIFEST
 
 DIST_FILES= $(GEN_FILES)

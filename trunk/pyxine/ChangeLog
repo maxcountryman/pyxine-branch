@@ -1,8 +1,12 @@
 2003-02-13  Geoffrey T. Dairiki  <dairiki@dairiki.org>
-	
+
+	* doc/: New subdirectory for documentation.  (Currently the
+	only documentation is an HTML version of the README.)
+	* doc/Makefile: New file
+	* doc/pyxine.css: New file
+
 	Abstract some of the higher-level player functionality
 	into pyxine.player.Player.
-
 	* pyxine/player.py: New file.
 	* pyxine/__init__.py: Update __all__
 	* pyxine/Makefile(PYSOURCE): Add pyxine/player.py
