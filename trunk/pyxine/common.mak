@@ -169,7 +169,7 @@ depend:
 	   sed 's/^\(.*\)\.o:/\1.o .\1.d:/' > $@
 
 # (Don't include $(DEPFILES) when targets include *clean or depend)
-ifneq (,$(filter-out %clean depend _buildmanifest, $(_GOALS)))
+ifneq (,$(filter-out %clean depend _buildmanifest distfiles pxlib.py, $(_GOALS)))
 -include $(DEPFILES)
 endif
 

@@ -46,6 +46,8 @@ dist	: sdist
 install	build sdist bdist bdist_rpm : setup.py
 	$(PYSETUP) $@
 
+sdist bdist bdist_rpm : distfiles
+
 MANIFEST: $(addsuffix /Makefile, $(SUBDIRS))
 	@echo "Generating MANIFEST"
 	@$(MAKE) _subdir="" _buildmanifest 3>$@
