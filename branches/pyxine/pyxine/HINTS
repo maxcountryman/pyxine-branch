@@ -1,0 +1,8 @@
+Tkinter
+
+   When using a Tkinter.Frame for X11 xine output, make sure to
+   specify bg='' as an option.  This keeps Tk from redrawing the
+   background upon expose events.
+
+   Make sure to stop the stream playback before the Frame is deleted.
+   (You can do this by catching the '<Destroy>' event.)
