@@ -1,5 +1,14 @@
 2003-02-12  Geoffrey T. Dairiki  <dairiki@dairiki.org>
 
+	* README (README): Convert to reStructuredMarkup formatting.
+	Added some text.  (README is now on the pyxine web site.)
+
+2003-02-12  Geoffrey T. Dairiki  <dairiki@dairiki.org>
+
+	=================
+	Release 0.1alpha2
+	=================
+
 	* Makefile: Increment PYXINE_VERSION
 
 	* README: Instructions for playing an audio file were wrong.
