@@ -1,3 +1,9 @@
+2003-02-11  Geoffrey T. Dairiki  <dairiki@dairiki.org>
+
+	* pxlib/Callback.cc (rep_t, ~rep_t):  Remove debugging calls to
+	cerr.form().  Apparently ostream::form() is a GNU extension.
+	Don't use it!
+
 2003-02-07  Geoffrey T. Dairiki  <dairiki@dairiki.org>
 
 	* README: Add xine-lib to requirements

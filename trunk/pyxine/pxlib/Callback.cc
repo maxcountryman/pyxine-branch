@@ -66,13 +66,11 @@ PythonContext::rep_t::rep_t()
   state = PyThreadState_New(PyThreadState_Get()->interp);
   if (!state)
     throw Error("PyThreadState_New failed");
-  cerr.form("NEW PyThreadState: %p\n", state);
   PyThreadState_Clear(state);
 }
 
 PythonContext::rep_t::~rep_t()
 {
-  cerr.form("DELETE PyThreadState: %p\n", state);
   PyThreadState_Delete(state);
 }
 
