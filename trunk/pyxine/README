@@ -16,6 +16,7 @@ REQUIREMENTS
 
         - Python 2.2 or better
 	- Modern GNU gcc/g++
+	- xine-lib-1-beta4 (or better)
 
     If you want to hack the source, you'll also probably need:
 
