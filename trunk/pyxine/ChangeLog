@@ -1,7 +1,9 @@
 2003-02-13  Geoffrey T. Dairiki  <dairiki@dairiki.org>
 
+
 	* doc/: New subdirectory for documentation.  (Currently the
 	only documentation is an HTML version of the README.)
+	* Makefile (SUBDIRS): add new doc subdir
 	* doc/Makefile: New file
 	* doc/pyxine.css: New file
 
