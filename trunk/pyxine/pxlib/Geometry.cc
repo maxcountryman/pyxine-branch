@@ -82,7 +82,7 @@ Traits<WindowGeometry>::pack_tuple(const WindowGeometry& g)
 std::string
 Traits<WindowGeometry>::to_string(const WindowGeometry& g)
 {
-  ostringstream buf;
+  std::ostringstream buf;
 
   buf << "<" << typeid(g).name() << ": "
       << g.width << "x" << g.height

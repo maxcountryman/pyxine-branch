@@ -160,7 +160,7 @@ XDisplay::get_window_geometry(const XConfigureEvent& e)
   return g;
 }
 
-inline void
+void
 XDisplay::select_input(Window w, long event_mask)
 {
   XDisplayLock xlock(display);
