@@ -1,0 +1,36 @@
+<?php
+
+$INDEX = array('Pages' =>
+	       array("Home" => "http://pyxine.sourceforge.net/"),
+
+	       'Links' =>
+	       array("SF Project Info" =>
+		     "http://sourceforge.net/projects/pyxine",
+			
+		     "Downloads" =>
+		     "http://sourceforge.net/project/showfiles.php?group_id=73236",
+				
+		     "CVS Repo" =>
+		     "http://sourceforge.net/cvs/?group_id=73236")
+	       );
+
+$first = true;
+
+foreach ($INDEX as $head => $list) {
+    if ($first) {
+?>
+        <span class="hide">&nbsp;</span>
+<?php
+        $first = false;				 
+    }
+?>  
+    <strong class="h2"><?=$head?><span class="hide">:</span></strong>
+<?php
+    foreach ($list as $text => $url) {
+        $class = ($text == $SELECTED) ? 'selected' : 'menu';
+?>
+        <a href="<?=$url?>" class="<?=$class?>"><?=$text?></a>
+<?php
+    }
+}
+?>
