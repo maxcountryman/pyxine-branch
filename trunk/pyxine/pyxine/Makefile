@@ -27,7 +27,7 @@ PYSOURCE += event.py __init__.py osd.py post.py
 PYSOURCE += weakmethod.py x11.py xine.py
 
 GEN_FILES = libxine_wrap.c pxlib.py
-DIST_FILES= Makefile libxine.i fixed_xine.h xine.h.orig
+DIST_FILES= Makefile libxine.i fixed_xine.h orig_xine.h
 DIST_FILES+= $(GEN_FILES) $(PYSOURCE)
 
 OFILES	  = libxine_wrap.o
