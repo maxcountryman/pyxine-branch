@@ -21,7 +21,7 @@
 TOP	  = .
 
 # FIXME
-PYXINE_VERSION = 0.1alpha1
+PYXINE_VERSION = 0.1alpha2
 
 SUBDIRS	  = pxlib pyxine test examples
 GEN_FILES = setup.py MANIFEST

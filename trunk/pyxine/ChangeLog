@@ -1,5 +1,7 @@
 2003-02-12  Geoffrey T. Dairiki  <dairiki@dairiki.org>
 
+	* Makefile: Increment PYXINE_VERSION
+
 	* README: Instructions for playing an audio file were wrong.
 	Added some notes about the example players.
 
