@@ -24,7 +24,7 @@ PACKAGE	  = pyxine
 
 PYSOURCE  = config.py constants.py constwrap.py cstruct.py
 PYSOURCE += event.py __init__.py osd.py post.py
-PYSOURCE += weakmethod.py x11.py xine.py
+PYSOURCE += weakmethod.py x11.py xine.py player.py
 
 GEN_FILES = libxine_wrap.c pxlib.py
 DIST_FILES= Makefile libxine.i fixed_xine.h orig_xine.h

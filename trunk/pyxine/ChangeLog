@@ -1,3 +1,14 @@
+2003-02-13  Geoffrey T. Dairiki  <dairiki@dairiki.org>
+	
+	Abstract some of the higher-level player functionality
+	into pyxine.player.Player.
+
+	* pyxine/player.py: New file.
+	* pyxine/__init__.py: Update __all__
+	* pyxine/Makefile(PYSOURCE): Add pyxine/player.py
+	* examples/player.py(Player): Use pyxine.player.Player.
+	* examples/tkplayer.py(Player): Use pyxine.player.Player.
+
 2003-02-12  Geoffrey T. Dairiki  <dairiki@dairiki.org>
 
 	* README (README): Convert to reStructuredMarkup formatting.
@@ -5,10 +16,10 @@
 
 2003-02-12  Geoffrey T. Dairiki  <dairiki@dairiki.org>
 
-	=================
-	Release 0.1alpha2
-	=================
-
+	==================
+	Release 0.1alpha2.
+	==================
+	
 	* Makefile: Increment PYXINE_VERSION
 
 	* README: Instructions for playing an audio file were wrong.

@@ -27,6 +27,7 @@ Note that, at present, tkplayer.py is slightly more polished than this one.
 from Xlib import X, Xutil, threaded, display, XK
 
 import pyxine
+import pyxine.player
 
 import sys, os, os.path
 
@@ -86,47 +87,15 @@ class Window:
 
         self.xine_visual = pyxine.XlibDrawable(self.window)
 
-class Player:
+class Player(pyxine.player.Player):
     def __init__(self, window):
         xine = pyxine.Xine(cfg_filename=XINECFG)
         ao = xine.open_audio_driver()
         vo = xine.open_video_driver(data=window.xine_visual)
         #vo = xine.open_video_driver("xv", visual="X11", data=vis)
         stream = xine.stream_new(ao, vo)
-        self.stream = stream
-        self.play(LOGO)
+        self.set_stream(stream)
     
-    def play(self, mrl, pos=0, time=0):
-        stream = self.stream
-        stream.open(mrl)
-        if stream.has_video:
-            self.degoomify()
-        else:
-            self.goomify()
-        stream.play(pos, time)
-
-    def stop(self):
-        self.stream.stop()
-        
-    def pause(self):
-        stream = self.stream
-        if stream.speed == "NORMAL":
-            stream.speed = "PAUSE"
-        else:
-            stream.speed = "NORMAL"
-
-    def degoomify(self):
-        stream = self.stream
-        stream.audio_source.wire(stream.ao)
-
-    def goomify(self):
-        stream = self.stream
-        from pyxine import post
-        goom = post.Post(stream, "goom",
-                         audio_target=stream.ao,
-                         video_target=stream.vo)
-        stream.audio_source.wire(goom.inputs["audio in"])
-
 
 class Quit(Exception):
     pass
@@ -185,7 +154,8 @@ class Main:
         raise Quit
 
     def play(self):
-        self.player.play(self.playlist[0])
+        if self.playlist:
+            self.player.play(self.playlist[0])
 
     def stop(self):
         self.player.stop()
@@ -194,18 +164,20 @@ class Main:
         self.player.pause()
         
     def play_next(self):
-        self.playlist.append(self.playlist.pop(0))
-        self.play()
+        if self.playlist:
+            self.playlist.append(self.playlist.pop(0))
+            self.play()
         
     def play_prev(self):
-        self.playlist.insert(0, self.playlist.pop())
-        self.play()
+        if self.playlist:
+            self.playlist.insert(0, self.playlist.pop())
+            self.play()
         
     def handle_ClientMessage(self, e):
         if e.client_type == window.WM_PROTOCOLS:
             fmt, data = e.data
-            if fmt == 32 and data[0] == window.WM_DELETE_WINDOW:
-                raise Quit
+        if fmt == 32 and data[0] == window.WM_DELETE_WINDOW:
+            raise Quit
 
     
 if __name__ == '__main__':

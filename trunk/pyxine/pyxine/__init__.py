@@ -18,7 +18,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-__all__ = [ 'constants', 'xine', 'x11', 'stream' ]
+__all__ = [ 'constants', 'xine', 'x11',
+            'osd', 'post', 'player', 'weakmethod' ]
+
 
 class Error(Exception):
     """Base exception class for exceptions raised by pyxine.

@@ -21,13 +21,11 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 from Tkinter import *
-import pyxine
-from pyxine import constwrap
+import pyxine, pyxine.player
 import os, os.path
 
 
 XINECFG = os.path.join(os.environ['HOME'], '.xine/config2')
-LOGO = "/usr/share/xine/skins/xine-ui_logo.mpv"
 
 # Callbacks from pyxine happen asynchronously.
 # Tkinter doesn't seem to be thread-safe.
@@ -84,10 +82,10 @@ class X11Visual(pyxine.TkWidget):
         lock = theTkMutex()
         return pyxine.TkWidget.frame_output_cb(self, *args)
     
-class Player(Frame):
+class Player(Frame, pyxine.player.Player):
     def __init__(self, master=None):
         Frame.__init__(self, master, bg='gray10', width=100, height=100)
-
+        
         self.stream = None
 
         vidwin = Frame(self, bg='')
@@ -103,26 +101,16 @@ class Player(Frame):
             return
         xine = pyxine.Xine(cfg_filename=XINECFG)
         visual = X11Visual(self.vidwin)
+        self.visual = visual
         vo = xine.open_video_driver("xv", data=visual)
         stream = xine.stream_new(vo=vo)
-        self.listener = stream.new_event_listener(self.xine_event_cb)
-        self.stream = stream
-        self.visual = visual
-        self.play(LOGO)
-
+        self.set_stream(stream)
+        print "STREAM OPEN"
+        
     def close_stream(self):
         self.listener = None
-        self.stream = None
         self.visual = None
-
-    def xine_event_cb(self, event):
-        if event.type == "FRAME_FORMAT_CHANGE":
-            self.frame_format_change(event.data)
-        elif event.type == "UI_PLAYBACK_FINISHED":
-            print "PLAYBACK DONE"
-            self.stop()
-        else:
-            print "Unhandled event", event
+        self.set_stream(None)
 
     def frame_format_change(self, format):
         video_geometry = format.get_video_geometry()
@@ -142,55 +130,6 @@ class Player(Frame):
         top.geometry("%dx%d" % (fwidth, fheight))
         print "FRAME SIZE CHANGE", (width, height), (fwidth, fheight)
         
-    def play(self, mrl):
-        stream = self.stream
-        stream.close()
-        print "OPEN"
-        stream.open(mrl)
-        self.current_mrl = mrl
-        if stream.has_video:
-            self.degoomify()
-        else:
-            self.goomify()
-        print "PLAY"
-        stream.play()
-
-    def stop(self):
-        stream = self.stream
-        if self.current_mrl != LOGO:
-            self.play(LOGO)
-        else:
-            self.stream.close()
-
-    def pause(self):
-        stream = self.stream
-        if stream.speed == "NORMAL":
-            stream.speed = "PAUSE"
-        else:
-            stream.speed = "NORMAL"
-        
-    def seek(self, pos):
-        stream = self.stream
-        stream.stop()
-        stream.play(pos)
-
-    def seekrel(self, secs):
-        stream = self.stream
-        pos = stream.get_pos_length()[1]
-        stream.stop()
-        stream.play(start_time = pos + secs)
-
-    def degoomify(self):
-        stream = self.stream
-        stream.audio_source.wire(stream.ao)
-
-    def goomify(self):
-        stream = self.stream
-        from pyxine import post
-        goom = post.Post(stream, "goom",
-                         audio_target=stream.ao,
-                         video_target=stream.vo)
-        stream.audio_source.wire(goom.inputs["audio in"])
 
 class Main(Tk):
     def __init__(self):
