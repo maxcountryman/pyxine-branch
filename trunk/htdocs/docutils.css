@@ -1,0 +1,216 @@
+/*
+ * Modified from docutils/tools/stylesheets/default.css:
+ */
+
+/*
+:Orig-Author: David Goodger
+:Orig-Contact: goodger@users.sourceforge.net
+:Orig-date: $Date$
+:Orig-version: $Revision$
+:Orig-copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+*/
+
+.document .first {
+  margin-top: 0 }
+
+.document .last {
+  margin-bottom: 0 }
+
+.document a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+.document dd {
+  margin-bottom: 0.5em }
+
+.document div.abstract {
+  margin: 2em 5em }
+
+.document div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+.document div.attention,
+.document div.caution,
+.document div.danger,
+.document div.error,
+.document div.hint,
+.document div.important,
+.document div.note,
+.document div.tip,
+.document div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+.document div.attention p.admonition-title,
+.document div.caution p.admonition-title,
+.document div.danger p.admonition-title,
+.document div.error p.admonition-title,
+.document div.warning p.admonition-title {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+.document div.hint p.admonition-title,
+.document div.important p.admonition-title,
+.document div.note p.admonition-title, 
+.document div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+.document div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+.document div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+.document div.figure {
+  margin-left: 2em }
+
+.document div.footer,
+.document div.header {
+  font-size: smaller }
+
+.document div.system-messages {
+  margin: 5em }
+
+.document div.system-messages h1 {
+  color: red }
+
+.document div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+.document div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+.document div.topic {
+  margin: 2em }
+
+.document h1.title {
+  text-align: center }
+
+.document h2.subtitle {
+  text-align: center }
+
+.document hr {
+  width: 75% }
+
+.document ol.simple,
+.document ul.simple {
+  margin-bottom: 1em }
+
+.document ol.arabic {
+  list-style: decimal }
+
+.document ol.loweralpha {
+  list-style: lower-alpha }
+
+.document ol.upperalpha {
+  list-style: upper-alpha }
+
+.document ol.lowerroman {
+  list-style: lower-roman }
+
+.document ol.upperroman {
+  list-style: upper-roman }
+
+.document p.caption {
+  font-style: italic }
+
+.document p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+.document p.label {
+  white-space: nowrap }
+
+.document p.topic-title {
+  font-weight: bold }
+
+.document pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font-family: serif ;
+  font-size: 100% }
+
+.document pre.line-block {
+  font-family: serif ;
+  font-size: 100% }
+
+.document pre.literal-block,
+.document pre.doctest-block {
+  margin-left: 2em ;
+  margin-right: 2em ;
+  background-color: #eeeeee }
+
+.document span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+.document span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+.document span.interpreted {
+  font-family: sans-serif }
+
+.document span.option {
+  white-space: nowrap }
+
+.document span.option-argument {
+  font-style: italic }
+
+.document span.pre {
+  white-space: pre }
+
+.document span.problematic {
+  color: red }
+
+.document table {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+.document table.citation {
+  border-left: solid thin gray ;
+  padding-left: 0.5ex }
+
+.document table.docinfo {
+  margin: 2em 4em }
+
+.document table.footnote {
+  border-left: solid thin black ;
+  padding-left: 0.5ex }
+
+.document td,
+.document  th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+.document th.docinfo-name,
+.document th.field-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap }
+
+.document h1 tt,
+.document h2 tt,
+.document h3 tt,
+.document h4 tt,
+.document h5 tt,
+.document h6 tt {
+  font-size: 100% }
+
+.document tt {
+  background-color: #eeeeee }
+
+.document ul.auto-toc {
+  list-style-type: none }

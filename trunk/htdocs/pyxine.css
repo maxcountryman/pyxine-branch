@@ -1,10 +1,12 @@
+@import url(docutils.css);
+
 body {
   color: black;
   background: #cdf;
   margin: 1ex 1em;
   font-family: arial, helvetica, sans-serif;
 }
-h1 {
+h1.title {
   color: #821;
   background: #cdf;
 }
@@ -22,8 +24,8 @@ a {
 
 #index {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0px;
+  left: 0px;
   width: 8em;
   height: 100%;
   margin: 0;
@@ -56,16 +58,37 @@ a {
   color: black;
   background: white; 
 }
-#main h2 {
+
+#main h1, #main h2, #main h3, #main h4, #main h5, #main h6 {
   color: #821;
   background: #def;
-  margin-left: -1em;
   margin-right: 0;
+  font-weight: bold;
+}
+#main h1 {
   padding: 0.5ex 0.5em;
+  margin-left: -1em;
+}
+#main h2, #main h3, #main h4, #main h5, #main h6 {
+  margin-left: -0.3em;
+  padding: 0.3ex 0.3em;
+}
+#main h1 {
+  font-size: x-large;
+}
+#main h2 {
+  font-size: large;
+}
+#main h3, #main h4, #main h5 {
+  font-size: medium;
 }
 
-.newsitem h3 {
+#main .newsitem h2 {
+  color: inherit;
+  background: transparent;
   text-decoration: underline;
+  font-weight: bold;
+  font-size: medium;
 }
 .newsitem hr {
   width: 85%;
@@ -88,4 +111,29 @@ p.signature {
   border: 0;
   width: 88px;
   height: 31px;
+}
+
+
+/*
+ * Docutils fixups
+ */
+.document h1.title {
+  display: none;
+}
+.document a.toc-backref {
+  color: inherit;
+  background-color: inherit;
+}
+.document div.contents {
+  margin: 0;
+}
+.document div.contents p.topic-title {
+  /* Copy from #body h1 */
+  color: #821;
+  background: #def;
+  margin-right: 0;
+  padding: 0.5ex 0.5em;
+  margin-left: -1em;
+  font-size: x-large;
+  font-weight: bold;
 }

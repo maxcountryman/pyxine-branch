@@ -19,4 +19,32 @@ class Page extends Template
   }
 }
 
+function docutils_output($filename)
+{
+  $fp = fopen($filename, "r");
+
+  while ($line = fgets($fp, 2048)) {
+    if ($line == "<body>\n")
+      break;
+  }
+
+  while ($line = fgets($fp, 2048)) {
+    if ($line == "</body>\n")
+      break;
+
+    /*
+    $line = str_replace('<div class="contents topic" id="table-of-contents">',
+                        '<div class="contents topic">',
+                        $line);
+
+    $line = str_replace('<a name="table-of-contents">',
+                        '<a id="table-of-contents">',
+                        $line);
+    */
+    print $line;
+  }
+
+  fclose ($fp);
+}
+
 ?>

@@ -1,48 +1,58 @@
 <hr class="hide" />
 <?php
 
-function index_head($head) {
-  static $first = true;
-  if (!$first) {
-    ?><span class="hide">&nbsp;</span><?php
+class Index {
+  function Index($selected) {
+    $this->_selected = $selected;
+    $this->_section_sep = "";
   }
-  $first = false;
-  ?><strong class="h2"><?=htmlspecialchars($head)?><span class="hide">:</span></strong>
-  <?php
+
+  function head($head) {
+    echo $this->_section_sep;
+    $this->_section_sep = '<span class="hide">&nbsp;</span>';
+    ?><strong class="h2"><?=htmlspecialchars($head)?><span class="hide">:</span></strong>
+    <?php
+  }
+
+  function entry($text, $url, $title=false) {
+    ?><a href="<?=htmlspecialchars($url)?>"<?php
+    if ($text == $this->_selected) {
+      ?> class="selected"<?php
+    }
+    if (!$title) {
+      $title = $text;
+    }
+    ?> title="<?=htmlspecialchars($title)?>"><?=htmlspecialchars($text)?></a>
+    <?php
+  }
 }
 
-function index_entry($text, $url, $title=false) {
-  ?><a href="<?=htmlspecialchars($url)?>"<?php
-  if ($text == $GLOBAL['SELECTED']) {
-    ?> id="selected"<?php
-  }
-  if (!$title)
-    $title = $text;
-  ?> title="<?=htmlspecialchars($title)?>"><?=htmlspecialchars($text)?></a>
-  <?php
-}
 
-index_head('Pages');
-index_entry('Home',
-	    "http://pyxine.sourceforge.net/",
-	    "The Pyxine Home Page");
+$i = new Index($SELECTED);
+$i->head('Pages');
+$i->entry('Home',
+	  "http://pyxine.sourceforge.net/",
+	  "The Pyxine Home Page");
+$i->entry('README',
+	  "http://pyxine.sourceforge.net/readme.html",
+	  "The README from the latest Pyxine distribution");
 
-index_head('SourceForge');
-index_entry("Project Info",
-	    "http://sourceforge.net/projects/pyxine",
-	    "SourceForge project info for Pyxine");
-index_entry("Downloads",
-	    "http://sourceforge.net/project/showfiles.php?group_id=73236");
-index_entry("CVS",
-	    "http://sourceforge.net/cvs/?group_id=73236",
-	    "CVS Repository");
+$i->head('SourceForge');
+$i->entry("Project Info",
+	  "http://sourceforge.net/projects/pyxine",
+	  "SourceForge project info for Pyxine");
+$i->entry("Downloads",
+	  "http://sourceforge.net/project/showfiles.php?group_id=73236");
+$i->entry("CVS",
+	  "http://sourceforge.net/cvs/?group_id=73236",
+	  "CVS Repository");
 
-index_head('Links');
-index_entry("xine",
-	    "http://xinehq.de",
-	    "The xine home page");
-index_entry("freshmeat",
-	    "http://freshmeat.net/projects/pyxine",
-	    "The freshmeat listing for Pyxine");
+$i->head('Links');
+$i->entry("xine",
+	  "http://xinehq.de",
+	  "The xine home page");
+$i->entry("freshmeat",
+	  "http://freshmeat.net/projects/pyxine",
+	  "The freshmeat listing for Pyxine");
 ?>
 <hr class="hide" />
