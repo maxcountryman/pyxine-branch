@@ -2,3 +2,5 @@
 DirectoryIndex index.html
 
 AddType application/x-httpd-php .html
+
+php_value include_path "./pyxine:."
