@@ -67,6 +67,10 @@ a {
 .newsitem h3 {
   text-decoration: underline;
 }
+.newsitem hr {
+  width: 85%;
+  height: 1px;
+}
 p.signature {
   margin-top: 0;
   margin-left: 5%;
