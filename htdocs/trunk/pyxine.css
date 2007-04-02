@@ -20,6 +20,11 @@ a {
 
 #body {
   position: relative;
+
+  /* This is a hack for IE.  Without in the menu is positioned relative
+   * to #main rather than #body. 
+   */
+  border: 1px #cdf solid;
 }
 
 #index {
@@ -83,17 +88,6 @@ a {
   font-size: medium;
 }
 
-#main .newsitem h2 {
-  color: inherit;
-  background: transparent;
-  text-decoration: underline;
-  font-weight: bold;
-  font-size: medium;
-}
-.newsitem hr {
-  width: 85%;
-  height: 1px;
-}
 p.signature {
   margin-top: 0;
   margin-left: 5%;
@@ -111,6 +105,31 @@ p.signature {
   border: 0;
   width: 88px;
   height: 31px;
+}
+
+/*
+ * News items
+ */
+.news strong {
+  color: #821;
+  font-size: large;
+  text-decoration: underline;
+}
+.news .date > a {
+  display: none;
+}
+.news p {
+  margin-right: 2em;
+  padding-top: 1ex;
+  border-top: 2px solid #999;
+}
+.news p:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+.news small + br {
+  line-height: 150%;
+  vertical-align: top;
 }
 
 

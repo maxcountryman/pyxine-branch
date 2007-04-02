@@ -9,27 +9,12 @@ $page = new Page('Home');
 
 <hr class="hide" />
 <h1>News</h1>
-<div class="newsitem">
-<h2>12 February, 2003</h2>
-<p>A stupid-bug fix release (<a href="http://sourceforge.net/project/showfiles.php?group_id=73236">0.1alpha2</a>) is out.  This one might just compile for you!</p>
-
-<p>I've also updated the (still incomplete) <a href="readme.html">README</a> and put it on-line.
-(Of course, the updated README didn't make it into 0.1alpha2.)</p>
-
-<hr />
+<div class="news">
+<?php 
+// See https://sourceforge.net/docman/display_doc.php?docid=1502&group_id=1#newsexport for docs
+include("http://sourceforge.net/export/projnews.php?group_id=73236&limit=3&flat=0&show_summaries=1"); 
+?>
 </div>
 
-<div class="newsitem">
-<h2>7 February, 2003</h2>
-<p><strong>First release!</strong>
-   Get it <a href="http://sourceforge.net/project/showfiles.php?group_id=73236"
-   >here</a>.</p>
-<p>This code is in it's very infancy, but it seems to work more-or-less
-   --- at least for me. works for me.  Expect much refactoring and 
-   numerous API changes within the near future.</p>
-<p>There's a <a href="http://lists.sourceforge.net/mailman/listinfo/pyxine-devel"
-   >pyxine-devel</a> mailing list, which you should feel
-   welcome to join if you're interested in the development of this code.</p>
-<p class="signature">--<a href="dairiki@users.sourceforge.net">Jeff</a></p>
-</div>
+
 <?php $page->flush(); ?>
