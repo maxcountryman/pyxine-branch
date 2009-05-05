@@ -1,0 +1,10 @@
+cdef extern from "xine_internal.h":
+	cdef extern struct xine_event_queue_s:
+		xine_t			*xine
+		metronom_t		*metronom
+		input_plugin_t	*input_plugin
+		int				content_detection_method
+	ctypedef xine_event_queue_s xine_event_queue_t
+	cdef extern struct xine_stream_s
+	ctypedef xine_stream_s xine_stream_t
+	

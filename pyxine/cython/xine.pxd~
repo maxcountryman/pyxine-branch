@@ -1,0 +1,342 @@
+cimport types
+cimport xine_internal
+
+cdef extern from "xine.h":
+	cdef extern struct xine_s
+	cdef extern struct xine_audio_port_s
+	cdef extern struct xine_video_port_s
+	cdef extern struct xine_event_queue_s
+	cdef extern struct xine_mrl_t:
+		char		*origin # file plugin: path 
+		char		*mrl    # <type>://<location> 
+		char		*link
+		uint32_t	type   # see below 
+		off_t		size   # size of this source, may be 0
+		
+	cdef extern struct xine_config_entry_translation_t:
+		ConstCharPtr *old_name, *new_name
+
+	ctypedef xine_audio_port_s xine_audio_port_t
+	ctypedef xine_video_port_s xine_video_port_t
+	
+	cdef extern struct xine_post_s:
+		xine_audio_port_t **audio_input
+		xine_video_port_t **video_input
+		int type
+	
+	cdef extern struct xine_current_frame_data_t:
+		int width
+		int height
+		int crop_left
+		int crop_right
+		int crop_top
+		int crop_bottom
+		int ratio_code
+		int interlaced
+		int format
+		int img_size
+		uInt8 *img
+		
+	cdef extern struct xine_post_out_s
+	cdef extern struct xine_post_in_s:
+		ConstCharPtr	*name
+		int			 	type
+		void			*void
+		
+	ctypedef xine_post_in_s xine_post_in_t
+	ctypedef xine_post_out_s xine_post_out_t
+	
+	cdef extern struct xine_post_out_s:
+		ConstCharPtr	*name
+		int			 	type
+		void			*void
+		int (*rewire) (xine_post_out_t *self, void *data)
+	
+	
+	ctypedef void (*xine_config_cb_t)
+	cdef extern struct xine_cfg_entry_s:
+		ConstCharPtr 	*key
+		int				type
+		char			*unknown_value
+		char			*str_value
+		char			*str_default
+		void			*dummy
+		int				*num_value
+		int				*num_default
+		int				*range_min
+		int				*range_max
+		char			**enum_values
+		ConstCharPtr	*description
+		ConstCharPtr	*help
+		int				exp_level
+		xine_config_cb_t callback
+		void			*callback_data
+		
+	cdef extern struct timeval
+	cdef extern struct xine_event_t:
+		int						type
+		xine_stream_t			*stream
+		void					*data
+		int						data_length
+		timeval				tv
+		
+	cdef extern struct xine_input_data_t:
+		xine_event_t		event
+		uInt8				button # Generally 1 = left, 2 = mid, 3 = right
+		uInt16				x,y    # In Image space
+		
+	cdef extern struct xine_ui_data_t:
+		int					num_buttons
+		int					str_len
+		char				str[256]
+		
+	cdef extern struct xine_message_ui_data_t:
+		xine_ui_data_t		compatibility
+		int					type
+		int					explanation
+		int					num_parameters
+		int					parameters
+		char				messages[1]
+		
+	cdef extern struct xine_format_change_data_t:
+		int					width
+		int					height
+		int					aspect
+		int					pan_scan
+		
+	cdef extern struct xine_audio_level_data_t:
+		int					left  #0...100%
+		int					right #0...100%
+		int					mute
+		
+	cdef extern struct xine_progress_data_t:
+		ConstCharPtr		*description # e.g. "connecting..."
+		int					percent
+		
+	cdef extern struct xine_mrl_reference_data_ext_t:
+		int					alternative 		 # Alternative playlist number, usually 0
+		uInt32				start_time, duration # Milliseconds
+		uInt32				spare[20]			 # For future expansion
+		ConstCharPtr		mrl[1]
+		
+	cdef extern struct xine_set_mpeg_data_t:
+		int		bitrate_vbr   # 1 = vbr, 0 = cbr 
+		int		bitrate_mean  # mean (target) bitrate in kbps
+		int		bitrate_peak  # peak (max) bitrate in kbps
+		int		gop_size      # GOP size in frames
+		int		gop_closure   # open/closed GOP
+		int		b_frames	  # number of B frames to use
+		int		aspect_ratio  # XINE_VO_ASPECT_xxx
+		uInt32	spare[20]
+		
+	cdef extern struct xine_spu_button_t:
+		int		direction
+		int32	button
+		
+	cdef extern struct xine_dropped_frame_t:
+		int skipped_frames
+		int skipped_threshold
+		int discarded_frames
+		int discarded_threshold
+		
+
+	
+	ctypedef xine_cfg_entry_s xine_cfg_entry_t
+	ctypedef void (*xine_config_cb_t) (void *user_data,xine_cfg_entry_t *entry)
+	ctypedef xine_post_s xine_post_t
+	ctypedef xine_s xine_t
+	ctypedef xine_cfg_entry_t Const_xine_cfg_entry_t  "const xine_cfg_entry_t"
+	ctypedef xine_event_t Const_xine_event_t "const xine_event_t"
+	ctypedef xine_mrl_t XineMrlDbl  "xine_mrl_t *"
+
+
+
+# Version stuff
+# DONE
+cdef extern const_char_ptr xine_get_version_string()
+# DONE
+cdef extern void xine_get_version (int *major, int *minor, int *sub)
+# DONE
+cdef extern int xine_check_version(int major, int minor, int sub)
+# Xine creation and deletion
+# DONE
+cdef extern xine_t *xine_new()
+# DONE
+cdef extern void xine_init (xine_t *self)
+# DONE
+cdef extern void xine_exit (xine_t *self)
+# Open Drivers
+# DONE
+cdef extern xine_audio_port_t *xine_open_audio_driver(xine_t *self, ConstCharPtr *id,void *data)
+# DONE
+cdef extern xine_video_port_t *xine_open_video_driver (xine_t *self, ConstCharPtr *id,int visual, void *data)
+# Close Drivers
+# DONE
+cdef extern void xine_close_audio_driver (xine_t *self, xine_audio_port_t  *driver)
+# DONE
+cdef extern void xine_close_video_driver (xine_t *self, xine_video_port_t  *driver)
+# Streams
+# DONE
+cdef extern xine_stream_t *xine_stream_new(xine_t *self,xine_audio_port_t *ao, xine_video_port_t *vo)
+# DONE
+cdef extern int xine_stream_master_slave(xine_stream_t *master, xine_stream_t *slave,int affection)
+# DONE
+cdef extern int xine_open (xine_stream_t *stream, ConstCharPtr *mrl)
+# DONE
+cdef extern int xine_play (xine_stream_t *stream, int start_pos, int start_time)
+# DONE
+cdef extern void xine_stop (xine_stream_t *stream)
+# DONE
+cdef extern void xine_close (xine_stream_t *stream)
+# DONE
+cdef extern int xine_eject (xine_stream_t *stream)
+# DONE
+cdef extern void xine_dispose (xine_stream_t *stream)
+
+#### Engine ##################################################################
+# DONE
+cdef extern void xine_engine_set_param(xine_t *self, int param, int value)
+# DONE
+cdef extern int xine_engine_get_param(xine_t *self, int param)
+
+#### Video ###################################################################
+
+# ----- Not implemented -----
+#cdef extern int xine_get_current_frame (xine_stream_t *stream,int *width, int *height,int *ratio_code, int *format,uInt8 *img)
+#cdef extern int xine_get_current_frame_s (xine_stream_t *stream,int *width, int *height,int *ratio_code, int *format,uInt8 *img, int *img_size)
+#cdef extern int xine_get_current_frame_alloc (xine_stream_t *stream,int *width, int *height,int *ratio_code, int *format,uInt8 **img, int *img_size)
+#cdef extern int xine_get_current_frame_data (xine_stream_t *stream,xine_current_frame_data_t *data,int flags)
+#cdef extern int64 xine_get_current_vpts(xine_stream_t *stream)
+# ----- End -----
+
+#### Post ####################################################################
+cdef extern xine_post_t *xine_post_init(xine_t *xine, ConstCharPtr *name,int inputs,xine_audio_port_t **audio_target,xine_video_port_t **video_target)
+cdef extern ConstCharConstPtr *xine_list_post_plugins(xine_t *xine)
+cdef extern ConstCharConstPtr *xine_list_post_plugins_typed(xine_t *xine, int type)
+cdef extern ConstCharConstPtr *xine_post_list_inputs(xine_post_t *self)
+cdef extern ConstCharConstPtr *xine_post_list_outputs(xine_post_t *self)
+cdef extern xine_post_in_t *xine_post_input(xine_post_t *self, ConstCharPtr *name)
+cdef extern xine_post_out_t *xine_post_output(xine_post_t *self, ConstCharPtr *name)
+cdef extern int xine_post_wire(xine_post_out_t *source, xine_post_in_t *target)
+cdef extern int xine_post_wire_video_port(xine_post_out_t *source, xine_video_port_t *vo)
+cdef extern int xine_post_wire_audio_port(xine_post_out_t *source, xine_audio_port_t *ao)
+
+# Extracts an output for a stream. Use this to rewire the outputs of streams.
+
+cdef extern xine_post_out_t * xine_get_video_source(xine_stream_t *stream)
+cdef extern xine_post_out_t * xine_get_audio_source(xine_stream_t *stream)
+cdef extern void xine_post_dispose(xine_t *xine, xine_post_t *self)
+
+#### Xine Logging ############################################################
+# DONE
+cdef extern int xine_get_log_section_count(xine_t *self)
+cdef extern ConstCharConstPtr *xine_get_log_names(xine_t *self)
+cdef extern void xine_log (xine_t *self, int buf,ConstCharPtr *format, ...)
+
+cdef extern void xine_vlog(xine_t *self, int buf,ConstCharPtr *format, VaList args)
+cdef extern CharConstPtr *xine_get_log (xine_t *self, int buf)
+ctypedef void (*xine_log_cb_t) (void *user_data, int section)
+
+#### Error Code! #############################################################
+# DONE
+cdef extern int xine_get_error(xine_stream_t *stream)
+# DONE
+cdef extern int xine_get_status(xine_stream_t *stream)
+
+#### Foreign Languages #######################################################
+cdef extern int xine_get_audio_lang(xine_stream_t *stream, int channel,char *lang)
+cdef extern int xine_get_spu_lang(xine_stream_t *stream, int channel,char *lang)
+
+#### Get Position / Length ###################################################
+# DONE
+cdef extern int xine_get_pos_length(xine_stream_t *stream,int *pos_stream,int *pos_time,int *length_time)
+# DONE
+cdef extern uInt32 xine_get_stream_info(xine_stream_t *stream, int info)
+# DONE
+cdef extern ConstCharPtr *xine_get_meta_info(xine_stream_t *stream, int info)
+
+#### Plugins #################################################################
+
+# Get a list of browsable input plugin ids
+cdef extern ConstCharConstPtr *xine_get_browsable_input_plugin_ids (xine_t *self)
+
+# Ask input plugin named <plugin_id> to return
+# a list of available MRLs in domain/directory <start_mrl>.
+
+# <start_mrl> may be NULL indicating the toplevel domain/dir
+# returns <start_mrl> if <start_mrl> is a valid MRL, not a directory
+# returns NULL if <start_mrl> is an invalid MRL, not even a directory.
+
+# this is broken because of a struct in a struct
+
+cdef extern XineMrlDbl *xine_get_browse_mrls(xine_t *self,ConstCharPtr *plugin_id,ConstCharPtr *start_mrl,int *num_mrls)
+# Get autoplay MRL list from input plugin named <plugin_id>
+cdef extern ConstCharConstPtr *xine_get_autoplay_input_plugin_ids (xine_t *self)
+# Get a list of file extensions for file types supported by xine
+# the list is separated by spaces
+# the pointer returned can be free()ed when no longer used
+cdef extern char **xine_get_autoplay_mrls (xine_t *self,ConstCharPtr *plugin_id,int *num_mrls)
+cdef extern char *xine_get_file_extensions (xine_t *self)
+cdef extern char *xine_get_mime_types (xine_t *self)
+cdef extern char *xine_get_demux_for_mime_type (xine_t *self, ConstCharPtr *mime_type)
+cdef extern ConstCharPtr *xine_get_input_plugin_description (xine_t *self,ConstCharPtr *plugin_id)
+cdef extern ConstCharPtr *xine_get_demux_plugin_description (xine_t *self,ConstCharPtr *plugin_id)
+cdef extern ConstCharPtr *xine_get_spu_plugin_description   (xine_t *self,ConstCharPtr *plugin_id)
+cdef extern ConstCharPtr *xine_get_audio_plugin_description (xine_t *self,ConstCharPtr *plugin_id)
+cdef extern ConstCharPtr *xine_get_video_plugin_description (xine_t *self,ConstCharPtr *plugin_id)
+cdef extern ConstCharPtr *xine_get_audio_driver_plugin_description (xine_t *self,ConstCharPtr *plugin_id)
+cdef extern ConstCharPtr *xine_get_video_driver_plugin_description (xine_t *self,ConstCharPtr *plugin_id)
+cdef extern ConstCharPtr *xine_get_post_plugin_description  (xine_t *self,ConstCharPtr *plugin_id)
+# Get lists of available audio and video output plugins */
+cdef extern ConstCharConstPtr *xine_list_audio_output_plugins (xine_t *self)
+cdef extern ConstCharConstPtr *xine_list_video_output_plugins (xine_t *self)
+# typemask is (1ULL << XINE_VISUAL_TYPE_FOO) | ...
+cdef extern ConstCharConstPtr *xine_list_video_output_plugins_typed (xine_t *self, uInt64 typemask)
+# Get list of available demultiplexor plugins 
+cdef extern ConstCharConstPtr *xine_list_demuxer_plugins(xine_t *self)
+# Get list of available input plugins
+cdef extern ConstCharConstPtr *xine_list_input_plugins(xine_t *self)
+# Get list of available subpicture plugins
+cdef extern ConstCharConstPtr *xine_list_spu_plugins(xine_t *self)
+# Get list of available audio and video decoder plugins
+cdef extern ConstCharConstPtr *xine_list_audio_decoder_plugins(xine_t *self)
+cdef extern ConstCharConstPtr *xine_list_video_decoder_plugins(xine_t *self)
+# Unload unused plugins 
+cdef extern void xine_plugins_garbage_collector(xine_t *self)
+#### Config ##################################################################
+cdef extern ConstCharPtr *xine_config_register_string(xine_t *self,ConstCharPtr *key,ConstCharPtr *def_value,ConstCharPtr *description,ConstCharPtr *help,int exp_level,xine_config_cb_t changed_cb,void *cb_data)
+cdef extern ConstCharPtr *xine_config_register_filename(xine_t *self,ConstCharPtr *key,ConstCharPtr *def_value,int req_type, ConstCharPtr *description,ConstCharPtr *help,int exp_level,xine_config_cb_t changed_cb,void *cb_data)
+cdef extern int xine_config_register_range(xine_t *self,ConstCharPtr *key,int def_value,int min, int max,ConstCharPtr *description,ConstCharPtr *help,int exp_level,xine_config_cb_t changed_cb,void *cb_data)
+cdef extern int xine_config_register_enum(xine_t *self,ConstCharPtr *key,int def_value,char **values,ConstCharPtr *description,ConstCharPtr *help,int exp_level,xine_config_cb_t changed_cb,void *cb_data)
+cdef extern int xine_config_register_num(xine_t *self,ConstCharPtr *key,int def_value,ConstCharPtr *description,ConstCharPtr *help,int exp_level,xine_config_cb_t changed_cb,void *cb_data)
+cdef extern int xine_config_register_bool(xine_t *self,ConstCharPtr *key,int def_value,ConstCharPtr *description,ConstCharPtr *help,int exp_level,xine_config_cb_t changed_cb,void *cb_data)
+
+# The following functions will copy data from the internal xine_config
+# data database to the xine_cfg_entry_t *entry you provide
+# they return 1 on success, 0 on failure
+
+# Get first config item
+cdef extern int xine_config_get_first_entry(xine_t *self, xine_cfg_entry_t *entry)
+cdef extern int xine_config_get_next_entry(xine_t *self, xine_cfg_entry_t *entry)
+# Search for a config entry by key
+cdef extern int xine_config_lookup_entry(xine_t *self, ConstCharPtr *key,xine_cfg_entry_t *entry)
+# update a config entry (which was returned from lookup_entry() )
+# xine will make a deep copy of the data in the entry into its internal
+# config database.
+cdef extern void xine_config_update_entry(xine_t *self,Const_xine_cfg_entry_t *entry)
+# void xine_config_set_translation_user (const xine_config_entry_translation_t *) XINE_PROTECTED;
+cdef extern void xine_config_load(xine_t *self, ConstCharPtr *cfg_filename)
+cdef extern void xine_config_save(xine_t *self, ConstCharPtr *cfg_filename)
+cdef extern void xine_config_reset(xine_t *self)
+
+#### Event Queue #############################################################
+cdef extern xine_event_queue_t *xine_event_new_queue(xine_stream_t *stream)
+cdef extern void xine_event_dispose_queue(xine_event_queue_t *queue)
+# Fails because of the struct
+# cdef extern xine_event_t *xine_event_get  (xine_event_queue_t *queue)
+# cdef extern xine_event_t *xine_event_wait(xine_event_queue_t *queue)
+# cdef extern void xine_event_free(xine_event_t *event)
+
+ctypedef void (*xine_event_listener_cb_t) (void *user_data,Const_xine_event_t *event)
+cdef extern void xine_event_create_listener_thread (xine_event_queue_t *queue,xine_event_listener_cb_t callback,void *user_data)
+cdef extern void xine_event_send (xine_stream_t *stream, Const_xine_event_t *event)

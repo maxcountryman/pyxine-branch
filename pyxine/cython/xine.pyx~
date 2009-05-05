@@ -1,0 +1,328 @@
+DEF DEPRICATED = False
+
+# X =  xine.xine()
+# X.xineNew()
+# X.xineConfigLoad(Filename)
+# X.xineInit()
+# X.xineOpenAudioDriver("auto")
+cdef class xine:
+	def getVersionString(self):
+		return xine_get_version_string()
+'''
+cdef class xine:
+	cdef xine_t *xinePtr
+	cdef xine_audio_port_t *xineAudioPort
+	cdef xine_video_port_t *xineVideoPort
+	cdef xine_event_queue_t *xineEventQueue
+	cdef ConstCharConstPtr *xinePostPlugins
+	
+	def getVersionString(self):
+		return xine_get_version_string()
+		
+	cdef getVersion(self,int *Major,int *Minor,int *Sub):
+		xine_get_version(Major,Minor,Sub)
+		
+	def xineCheckVersion(self,Major,Minor,Sub):
+		Version = xine_check_version(Major,Minor,Sub)
+		if Version:
+			return True
+		else:
+			return False
+			
+	def xineNew(self):
+		self.xinePtr = xine_new()
+	def xineInit(self):
+		xine_init(self.xinePtr)
+	def xineExit(self):
+		xine_exit(self.xinePtr)
+	
+	cdef xineOpenAudioDriver(self,ConstCharPtr *Id,void *Data=NULL):
+		self.xineAudioPort = xine_open_audio_driver(self.xinePtr,<ConstCharPtr *>Id,Data)
+	cdef xineOpenVideoDriver(self,ConstCharPtr *Id,int Visual,void *Data):
+		self.xineVideoPort = xine_open_video_driver(self.xinePtr,Id,Visual,Data)
+	cdef xineCloseAudioDriver(self,xine_audio_port_t *Driver):
+		xine_close_audio_driver(self.xinePtr,Driver)
+	cdef xineCloseVideoDriver(self,xine_video_port_t *Driver):
+		xine_close_video_driver(self.xinePtr,Driver)
+		
+	# create a new stream for media playback/access
+	# returns xine_stream_t* if OK,
+	# NULL on error (use xine_get_error for details)
+	cdef xineStreamNew(self,xine_audio_port_t *AudioOut,xine_video_port_t *VideoOut):
+		cdef xine_stream_t Stream
+		Stream = xine_stream_new(self.xinePtr,AudioOut,VideoOut)
+		
+	cdef xineStreamMasterSlave(self,xine_stream_t *Master,xine_stream_t *Slave,int Affection):
+		Creation = xine_stream_master_slave(Master,Slave,Affection)
+		if Creation:
+			return True
+		else:
+			xine_get_error(Master)
+	
+	# look for input / demux / decoder plugins, find out about the format
+	# see if it is supported, set up internal buffers and threads
+	# returns 1 if OK, 0 on error (use xine_get_error for details)
+	cdef xineOpen(self,xine_stream_t *Stream, ConstCharPtr *Mrl):
+		Open = xine_open(Stream,Mrl)
+		if Open:
+			return True
+		else:
+			xine_get_error(Stream)
+	cdef xinePlay(self,xine_stream_t *Stream, int StartPosition, int StartTime):
+		Play = xine_play(Stream,StartPosition,StartTime)
+		if Play:
+			return True
+		else:
+			xine_get_error(Stream)
+	IF DEPRICATED == True:
+		# DEPRECATED!!!
+		cdef xineTrickMode(self,xine_stream_t *Stream,int Mode,int Value):
+			Trick = xine_trick_mode(Stream,Mode,Value)
+			if Trick:
+				return True
+			else:
+				xine_get_error(Stream)
+	
+	# Stop stream playback
+	# xine_stream_t stays valid for new xine_open or xine_play
+	cdef xineStop(self,xine_stream_t *Stream):
+		xine_stop(Stream)
+	# Stop stream playback, free all stream-related resources
+	# xine_stream_t stays valid for new xine_open or xine_play
+	cdef xineClose(self,xine_stream_t *Stream):
+		xine_close(Stream)
+	# Ask current/recent input plugin to eject media - may or may not work,
+	# depending on input plugin capabilities
+	cdef xineEject(self,xine_stream_t *Stream):
+		return xine_eject(Stream)
+	# stop playback, dispose all stream-related resources
+	# xine_stream_t no longer valid when after this
+	cdef xineDispose(self,xine_stream_t *Stream):
+		xine_dispose(Stream)
+		
+	# Set/get engine parameters.
+	
+	#define XINE_PARAM_SPEED                   1 /* see below                   */
+	#define XINE_PARAM_AV_OFFSET               2 /* unit: 1/90000 sec           */
+	#define XINE_PARAM_AUDIO_CHANNEL_LOGICAL   3 /* -1 => auto, -2 => off       */
+	#define XINE_PARAM_SPU_CHANNEL             4
+	#define XINE_PARAM_VIDEO_CHANNEL           5
+	#define XINE_PARAM_AUDIO_VOLUME            6 /* 0..100                      */
+	#define XINE_PARAM_AUDIO_MUTE              7 /* 1=>mute, 0=>unmute          */
+	#define XINE_PARAM_AUDIO_COMPR_LEVEL       8 /* <100=>off, % compress otherw*/
+	#define XINE_PARAM_AUDIO_AMP_LEVEL         9 /* 0..200, 100=>100% (default) */
+	#define XINE_PARAM_AUDIO_REPORT_LEVEL     10 /* 1=>send events, 0=> dont   */
+	#define XINE_PARAM_VERBOSITY              11 /* control console output      */
+	#define XINE_PARAM_SPU_OFFSET             12 /* unit: 1/90000 sec           */
+	#define XINE_PARAM_IGNORE_VIDEO           13 /* disable video decoding      */
+	#define XINE_PARAM_IGNORE_AUDIO           14 /* disable audio decoding      */
+	#define XINE_PARAM_IGNORE_SPU             15 /* disable spu decoding        */
+	#define XINE_PARAM_BROADCASTER_PORT       16 /* 0: disable, x: server port  */
+	#define XINE_PARAM_METRONOM_PREBUFFER     17 /* unit: 1/90000 sec           */
+	#define XINE_PARAM_EQ_30HZ                18 /* equalizer gains -100..100   */
+	#define XINE_PARAM_EQ_60HZ                19 /* equalizer gains -100..100   */
+	#define XINE_PARAM_EQ_125HZ               20 /* equalizer gains -100..100   */
+	#define XINE_PARAM_EQ_250HZ               21 /* equalizer gains -100..100   */
+	#define XINE_PARAM_EQ_500HZ               22 /* equalizer gains -100..100   */
+	#define XINE_PARAM_EQ_1000HZ              23 /* equalizer gains -100..100   */
+	#define XINE_PARAM_EQ_2000HZ              24 /* equalizer gains -100..100   */
+	#define XINE_PARAM_EQ_4000HZ              25 /* equalizer gains -100..100   */
+	#define XINE_PARAM_EQ_8000HZ              26 /* equalizer gains -100..100   */
+	#define XINE_PARAM_EQ_16000HZ             27 /* equalizer gains -100..100   */
+	#define XINE_PARAM_AUDIO_CLOSE_DEVICE     28 /* force closing audio device  */
+	#define XINE_PARAM_AUDIO_AMP_MUTE         29 /* 1=>mute, 0=>unmute */
+	#define XINE_PARAM_FINE_SPEED             30 /* 1.000.000 => normal speed   */ 
+	#define XINE_PARAM_EARLY_FINISHED_EVENT   31 /* send event when demux finish*/
+	#define XINE_PARAM_GAPLESS_SWITCH         32 /* next stream only gapless swi*/
+	#define XINE_PARAM_DELAY_FINISHED_EVENT   33 /* 1/10sec,0=>disable,-1=>forev*/
+	
+	cdef xineEngineSetParam(self,int Parameter,int Value):
+		xine_engine_set_param(self.xinePtr,Parameter,Value)
+	cdef xineEngineGetParam(self,int Parameter):
+		return xine_engine_get_param(self.xinePtr,Parameter)
+	
+	# Initialize a post plugin
+	# returns xine_post_t* on success, NULL on failure
+	# Initializes the post plugin with the given name and connects its
+	# outputs to the NULL-terminated arrays of audio and video ports.
+	# Some plugins also care about the number of inputs you request
+	# (e.g. mixer plugins), others simply ignore this number.
+	
+	# Doesnt work :(
+	cdef xinePostInit(self, ConstCharPtr *Name,int Inputs, xine_audio_port_t **AudioTarget,xine_video_port_t **VideoTarget):
+		xine_post_init(self.xinePtr,Name,Inputs,AudioTarget,VideoTarget)
+	cdef xineListPostPlugins(self):
+		self.xinePostPlugins = xine_list_post_plugins(self.xinePtr)
+	#cdef xineListPostPluginsTyped(self,int Type):
+	#	return xine_list_post_plugins_type(self.xinePtr,Type)
+	
+
+	cdef xineGetError(self,xine_stream_t *Stream):
+		Error = xine_get_error(Stream)
+		if Error == 1:
+			raise Exception('NoInputPlugin')
+		if Error == 2:
+			raise Exception('NoDemuxPlugin')
+		if Error == 3:
+			raise Exception('DemuxFailed')
+		if Error == 4:
+			raise Exception('MalformedMRL')
+		if Error == 5:
+			raise Exception('InputFailed')
+			
+	cdef xineGetStatus(self,xine_stream_t *Stream):
+		Status = xine_get_status(Stream)
+		if Status == 0:
+			return "XINE_STATUS_IDLE"
+		if Status == 1:
+			return "XINE_STATUS_STOP"
+		if Status == 2:
+			return "XINE_STATUS_PLAY"
+		if Status == 3:
+			return "XINE_STATUS_QUIT"
+			
+	cdef xineGetAudioLanguage(self,xine_stream_t *Stream,int Channel,char *Lang):
+		return xine_get_audio_lang(Stream,Channel,Lang)
+
+	#cdef xineGetSpuLanguage(self,xine_stream_t *Stream,int Channel,char *Lang)
+		#return xine_get_spu_lang(Stream,Channel,Lang)
+	 
+	# Depending of the nature and system layer of the stream,
+	# some or all of this information may be unavailable or incorrect
+	# (e.g. live network streams may not have a valid length)
+	# returns 1 on success, 0 on failure (data was not updated,
+	# probably because its not known yet... try again later)
+	# PosStream - 0...65535
+	# PosTime - milliseconds
+	# LengthTime - milliseconds
+	cdef xineGetPosLength(self,xine_stream_t *Stream,int *PosStream,int *PosTime,int *LengthTime):
+		Len = xine_get_pos_length(Stream,PosStream,PosTime,LengthTime)
+		if Len:
+			return True
+		else:
+			return False
+	
+	# xine_get_stream_info()
+	#define XINE_STREAM_INFO_BITRATE           0
+	#define XINE_STREAM_INFO_SEEKABLE          1
+	#define XINE_STREAM_INFO_VIDEO_WIDTH       2
+	#define XINE_STREAM_INFO_VIDEO_HEIGHT      3
+	#define XINE_STREAM_INFO_VIDEO_RATIO       4 /* *10000 */
+	#define XINE_STREAM_INFO_VIDEO_CHANNELS    5
+	#define XINE_STREAM_INFO_VIDEO_STREAMS     6
+	#define XINE_STREAM_INFO_VIDEO_BITRATE     7
+	#define XINE_STREAM_INFO_VIDEO_FOURCC      8
+	#define XINE_STREAM_INFO_VIDEO_HANDLED     9  /* codec available? */
+	#define XINE_STREAM_INFO_FRAME_DURATION    10 /* 1/90000 sec */
+	#define XINE_STREAM_INFO_AUDIO_CHANNELS    11
+	#define XINE_STREAM_INFO_AUDIO_BITS        12
+	#define XINE_STREAM_INFO_AUDIO_SAMPLERATE  13
+	#define XINE_STREAM_INFO_AUDIO_BITRATE     14
+	#define XINE_STREAM_INFO_AUDIO_FOURCC      15
+	#define XINE_STREAM_INFO_AUDIO_HANDLED     16 /* codec available? */
+	#define XINE_STREAM_INFO_HAS_CHAPTERS      17
+	#define XINE_STREAM_INFO_HAS_VIDEO         18
+	#define XINE_STREAM_INFO_HAS_AUDIO         19
+	#define XINE_STREAM_INFO_IGNORE_VIDEO      20
+	#define XINE_STREAM_INFO_IGNORE_AUDIO      21
+	#define XINE_STREAM_INFO_IGNORE_SPU        22
+	#define XINE_STREAM_INFO_VIDEO_HAS_STILL   23
+	#define XINE_STREAM_INFO_MAX_AUDIO_CHANNEL 24
+	#define XINE_STREAM_INFO_MAX_SPU_CHANNEL   25
+	#define XINE_STREAM_INFO_AUDIO_MODE        26
+	#define XINE_STREAM_INFO_SKIPPED_FRAMES    27 /* for 1000 frames delivered */
+	#define XINE_STREAM_INFO_DISCARDED_FRAMES  28 /* for 1000 frames delivered */
+	#define XINE_STREAM_INFO_VIDEO_AFD         29
+	#define XINE_STREAM_INFO_DVD_TITLE_NUMBER   30
+	#define XINE_STREAM_INFO_DVD_TITLE_COUNT    31
+	#define XINE_STREAM_INFO_DVD_CHAPTER_NUMBER 32
+	#define XINE_STREAM_INFO_DVD_CHAPTER_COUNT  33
+	#define XINE_STREAM_INFO_DVD_ANGLE_NUMBER   34
+	#define XINE_STREAM_INFO_DVD_ANGLE_COUNT    35
+	
+	# possible values for XINE_STREAM_INFO_VIDEO_AFD
+	#define XINE_VIDEO_AFD_NOT_PRESENT         -1
+	#define XINE_VIDEO_AFD_RESERVED_0          0
+	#define XINE_VIDEO_AFD_RESERVED_1          1
+	#define XINE_VIDEO_AFD_BOX_16_9_TOP        2
+	#define XINE_VIDEO_AFD_BOX_14_9_TOP        3
+	#define XINE_VIDEO_AFD_BOX_GT_16_9_CENTRE  4
+	#define XINE_VIDEO_AFD_RESERVED_5          5
+	#define XINE_VIDEO_AFD_RESERVED_6          6
+	#define XINE_VIDEO_AFD_RESERVED_7          7
+	#define XINE_VIDEO_AFD_SAME_AS_FRAME       8
+	#define XINE_VIDEO_AFD_4_3_CENTRE          9
+	#define XINE_VIDEO_AFD_16_9_CENTRE         10
+	#define XINE_VIDEO_AFD_14_9_CENTRE         11
+	#define XINE_VIDEO_AFD_RESERVED_12         12
+	#define XINE_VIDEO_AFD_4_3_PROTECT_14_9    13
+	#define XINE_VIDEO_AFD_16_9_PROTECT_14_9   14
+	#define XINE_VIDEO_AFD_16_9_PROTECT_4_3    15
+
+	# xine_get_meta_info()
+	#define XINE_META_INFO_TITLE               0
+	#define XINE_META_INFO_COMMENT             1
+	#define XINE_META_INFO_ARTIST              2
+	#define XINE_META_INFO_GENRE               3
+	#define XINE_META_INFO_ALBUM               4
+	#define XINE_META_INFO_YEAR                5
+	#define XINE_META_INFO_VIDEOCODEC          6
+	#define XINE_META_INFO_AUDIOCODEC          7
+	#define XINE_META_INFO_SYSTEMLAYER         8
+	#define XINE_META_INFO_INPUT_PLUGIN        9
+	#define XINE_META_INFO_CDINDEX_DISCID      10
+	#define XINE_META_INFO_TRACK_NUMBER        11
+	#define XINE_META_INFO_COMPOSER            12
+	
+	StreamInfo = {
+			0 : "XINE_STREAM_INFO_BITRATE",
+			1 : "XINE_STREAM_INFO_SEEKABLE",
+			2 : "XINE_STREAM_INFO_VIDEO_WIDTH",
+			3 : "XINE_STREAM_INFO_VIDEO_HEIGHT",
+			4 : "XINE_STREAM_INFO_VIDEO_RATIO",
+			5 : "XINE_STREAM_INFO_VIDEO_CHANNELS",
+			6 : "XINE_STREAM_INFO_VIDEO_STREAMS",
+			7 : "XINE_STREAM_INFO_VIDEO_BITRATE",
+			8 : "XINE_STREAM_INFO_VIDEO_FOURCC",
+			9 : "XINE_STREAM_INFO_VIDEO_HANDLED",
+			10: "XINE_STREAM_INFO_FRAME_DURATION",
+			11: "XINE_STREAM_INFO_AUDIO_CHANNELS",
+			12: "XINE_STREAM_INFO_AUDIO_BITS",
+			13: "XINE_STREAM_INFO_AUDIO_SAMPLERATE",
+			14: "XINE_STREAM_INFO_AUDIO_BITRATE",
+			15: "XINE_STREAM_INFO_AUDIO_FOURCC",
+			16: "XINE_STREAM_INFO_AUDIO_HANDLED",
+			17: "XINE_STREAM_INFO_HAS_CHAPTERS",
+			18: "XINE_STREAM_INFO_HAS_VIDEO",
+			19: "XINE_STREAM_INFO_HAS_AUDIO",
+			20: "XINE_STREAM_INFO_IGNORE_VIDEO",
+			21: "XINE_STREAM_INFO_IGNORE_AUDIO",
+			22: "XINE_STREAM_INFO_IGNORE_SPU",
+			23: "XINE_STREAM_INFO_VIDEO_HAS_STILL",
+			24: "XINE_STREAM_INFO_MAX_AUDIO_CHANNEL",
+			25: "XINE_STREAM_INFO_MAX_SPU_CHANNEL",
+			26: "XINE_STREAM_INFO_AUDIO_MODE",
+			27: "XINE_STREAM_INFO_SKIPPED_FRAMES",
+			28: "XINE_STREAM_INFO_DISCARDED_FRAMES",
+			29: "XINE_STREAM_INFO_VIDEO_AFD",
+			30: "XINE_STREAM_INFO_DVD_TITLE_NUMBER",
+			31: "XINE_STREAM_INFO_DVD_TITLE_COUNT",
+			32: "XINE_STREAM_INFO_DVD_CHAPTER_NUMBER",
+			33: "XINE_STREAM_INFO_DVD_CHAPTER_COUNT",
+			34: "XINE_STREAM_INFO_DVD_ANGLE_NUMBER",
+			35: "XINE_STREAM_INFO_DVD_ANGLE_COUNT"
+	}
+		
+	cdef extern xineGetStreamInfo(self,xine_stream_t *Stream,int Info):
+		In = xine_get_stream_info(Stream,Info)
+		return In
+	cdef extern xineGetMetaInfo(self,xine_stream_t *Stream,int Info):
+		GetMeta = <char *>xine_get_meta_info(Stream,Info)
+		return GetMeta
+	cdef extern xineGetLoadSectionCount(self):
+		return xine_get_log_section_count(self.xinePtr)
+	cdef extern xineEventNewQueue(self, xine_stream_t *Stream):
+		self.xineEventQueue = xine_event_new_queue(Stream)
+	cdef extern xineConfigLoad(self,ConstCharPtr *Filename):
+		xine_config_load(self.xinePtr,Filename)
+'''

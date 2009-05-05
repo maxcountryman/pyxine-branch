@@ -1,0 +1,16 @@
+cdef extern from *:
+	ctypedef char* const_char_ptr "const char*"
+	ctypedef char* ConstCharPtr "const char"
+	ctypedef char* ConstCharConstPtr "const char *const"
+	ctypedef char* CharConstPtr "char *const"
+	ctypedef void * VoidPtr "void *"
+	ctypedef int *intp
+	ctypedef int uInt8 "uint8_t"
+	ctypedef int uInt16 "uint16_t"
+	ctypedef int uInt32 "uint32_t"
+	ctypedef int uInt64 "uint64_t"
+	ctypedef int int32 "int32_t"
+	ctypedef int int64 "int64_t"
+	ctypedef char* VaList "va_list"
+	ctypedef long off_t
+	ctypedef unsigned long int uint32_t
