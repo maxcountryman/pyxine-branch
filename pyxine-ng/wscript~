@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+import os
+import Build, Options, Utils, Configure
+import preproc
+import sys, os, shutil
+from distutils import version
+
+APPNAME='pyxine-ng'
+srcdir = '.'
+blddir = 'build'
+def set_options(opt):
+    opt.tool_options('compiler_cxx')
+    opt.tool_options('compiler_cc')
+    opt.tool_options('python')
+def configure(conf):
+    conf.check_tool('compiler_cxx')
+    conf.check_tool('compiler_cc')
+    conf.check_tool('python')
+    conf.check_python_version((2,3))
+    conf.check_python_headers()
+    conf.check_cfg(package='libxine', atleast_version='1.1.13',args='--cflags --libs')
+    #conf.check_cfg(package='python', atleast_version='2.3',args='--cflags --libs')
+    
+def build(bld):
+    tgen = bld.new_task_gen()
+    tgen.find_sources_in_dirs('src')
+    tgen.uselib = ['LIBXINE']
+    tgen.features = 'cc pyext'
+    tgen.target = 'pyxine-ng'

@@ -1,0 +1,94 @@
+# project pyxineng (0.0.1rc) configured on Thu May  7 04:45:56 2009 by
+# waf 1.5.6 (abi 7, python 20504f0 on linux2)
+# using ./waf configure
+#
+Checking for program gcc
+
+find program='gcc' paths=[] var='CC' -> '/usr/lib/ccache/bin/gcc'
+
+Checking for program cpp
+
+find program='cpp' paths=[] var='CPP' -> '/usr/bin/cpp'
+
+Checking for program ar
+
+find program='ar' paths=[] var='AR' -> '/usr/bin/ar'
+
+Checking for program ranlib
+
+find program='ranlib' paths=[] var='RANLIB' -> '/usr/bin/ranlib'
+
+Checking for gcc 
+
+Checking for program python
+
+find program='python' paths=[] var='PYTHON' -> '/usr/bin/python'
+
+Checking for Python version >= 2.3
+
+Configuration returned from '/usr/bin/python':
+python_prefix = '/usr'
+python_SO = '.so'
+python_SYSLIBS = '-lm'
+python_LDFLAGS = '-Wl,-O1 -L.'
+python_SHLIBS = '-lpthread -ldl  -lutil'
+python_LIBDIR = '/usr/lib'
+python_LIBPL = '/usr/lib/python2.5/config'
+INCLUDEPY = '/usr/include/python2.5'
+Py_ENABLE_SHARED = 1
+MACOSX_DEPLOYMENT_TARGET = ''
+
+
+# Trying LIBDIR: ['/usr/lib']
+Checking for library python2.5
+
+==>
+
+int main() {
+	return 0;
+}
+
+<==
+[1/2] [32mcc: build/.wscript-trybuild/test.c -> build/.wscript-trybuild/testbuild/default/test_1.o
+[0m['/usr/lib/ccache/bin/gcc', '../test.c', '-c', '-o', 'default/test_1.o']
+[2/2] [33mcc_link: build/.wscript-trybuild/testbuild/default/test_1.o -> build/.wscript-trybuild/testbuild/default/testprog
+[0m['/usr/lib/ccache/bin/gcc', 'default/test_1.o', '-o', 'default/testprog', '-Wl,-O1', '-L.', '-L/usr/lib', '-Wl,-Bdynamic', '-lpython2.5', '-lm', '-lpthread', '-ldl', '-lutil']
+Checking for program python2.5-config
+
+find program='python2.5-config' paths=[] var='PYTHON_CONFIG' -> ''
+
+Checking for program python-config-2.5
+
+find program='python-config-2.5' paths=[] var='PYTHON_CONFIG' -> '/usr/bin/python-config-2.5'
+
+Include path for Python extensions (found via python-config --includes): ['/usr/include/python2.5']
+Checking for header Python.h
+
+==>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+ void Py_Initialize(void);
+ void Py_Finalize(void);
+#ifdef __cplusplus
+}
+#endif
+int main(int argc, char *argv[])
+{
+   argc++; /* avoid unused variable warning */
+   argv++; /* avoid unused variable warning */
+   Py_Initialize();
+   Py_Finalize();
+   return 0;
+}
+
+<==
+[1/2] [32mcc: build/.wscript-trybuild/test.c -> build/.wscript-trybuild/testbuild/default/test_1.o
+[0m['/usr/lib/ccache/bin/gcc', '-fno-strict-aliasing', '-I/usr/include/python2.5', '../test.c', '-c', '-o', 'default/test_1.o']
+[2/2] [33mcc_link: build/.wscript-trybuild/testbuild/default/test_1.o -> build/.wscript-trybuild/testbuild/default/testprog
+[0m['/usr/lib/ccache/bin/gcc', 'default/test_1.o', '-o', 'default/testprog', '-Wl,-O1', '-L.', '-L/usr/lib', '-Wl,-Bdynamic', '-lm', '-lpthread', '-ldl', '-lutil', '-lpython2.5']
+Checking for libxine >= 1.1.13
+
+pkg-config --errors-to-stdout --print-errors --atleast-version=1.1.13 libxine
+pkg-config --errors-to-stdout --print-errors --cflags --libs libxine
