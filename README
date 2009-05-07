@@ -1,0 +1,14 @@
+This library plays sound currently, but there is no video playback,
+the current project i am working on does not need video. If you need
+video support please contact me, i may be able to help.
+
+This library is not documented, USE AT YOUR OWN RISK.
+
+Requirements:
+ * xine-lib 1.1.x
+ * python 2.4+
+
+To compile:
+# cd pyxine-ng
+# ./waf configure
+# ./waf build
