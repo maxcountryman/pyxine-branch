@@ -4,5 +4,5 @@ from Cython.Distutils import build_ext
 
 setup(
     cmdclass = {'build_ext': build_ext},
-    ext_modules = [Extension("xine", ["src/cython/xine.pyx"],libraries = 	["xine"])]
+    ext_modules = [Extension("xine", ["xine.pyx"],libraries = 	["xine"])]
 )

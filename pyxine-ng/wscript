@@ -5,7 +5,7 @@ import preproc
 import sys, os, shutil
 from distutils import version
 
-APPNAME='pyxineng'
+APPNAME='xine'
 VERSION='0.0.1rc'
 
 srcdir = '.'
@@ -28,4 +28,4 @@ def build(bld):
     tgen.features = 'cc cshlib pyext'
     tgen.source = 'src/xine.c'
     tgen.uselib = ['LIBXINE']
-    tgen.target = 'pyxineng'
+    tgen.target = 'xine'
